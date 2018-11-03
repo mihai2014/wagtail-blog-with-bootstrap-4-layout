@@ -1,0 +1,18 @@
+/* layout */
+body {
+  padding-top: 70px;
+  background-color: #eff5ff;
+}
+
+.mycolor{
+  background-color: #eff5ff;
+}
+
+.code-style{
+  //margin-left: 5px;
+}
+
+/* page */
+.label{
+    background-color: #33ff33;
+}

@@ -1,0 +1,163 @@
+{% extends "blog/base.html" %}
+
+{% load wagtailcore_tags %}
+{% load menu_tags %}
+{% load static %}
+
+{% with remote="false" %}
+
+    {% block extra_css %}
+
+    <link rel="shortcut icon" type="image/png" href='{% static "blog/img/image2.png" %}' />
+
+    {% if remote == "true" %}
+        <!-- Bootstrap4 core CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://rawgit.com/google/code-prettify/master/loader/prettify.css">
+    {% else %}
+        <!-- Bootstrap4 core CSS -->
+        <link href="{% static 'blog/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+        <link href="{% static 'blog/code-prettify-master/loader/prettify.css' %}" rel="stylesheet">
+    {% endif %}
+
+    <link href="{% static 'blog/css/blog-home.css' %}" rel="stylesheet">
+    <link href="{% static 'blog/css/xpath.css' %}" rel="stylesheet">
+    <link href="{% static 'blog/menu_click/css/bootstrap-4-navbar.css' %}" rel="stylesheet">
+
+    {% endblock %}
+
+
+    {% block extra_js %}
+
+    {% if remote == "true" %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    {% else %}
+        <!-- Bootstrap core JavaScript -->
+        <script src="{% static 'blog/jquery/jquery.min.js' %}"></script>
+        <script src="{% static 'blog/bootstrap/js/bootstrap.min.js' %}"></script>
+    {% endif %}
+
+    <script src="{% static 'blog/menu_click/js/bootstrap-4-navbar.js' %}"></script>
+
+    {% endblock %}
+
+{% endwith %}
+
+{% block content %}
+
+   {% csrf_token %} 
+
+    <!-- Navigation -->
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+            <img height="40" class="rounded"  src="{% static "blog/img/image1.bmp" %}" />
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+<!--
+            {% main_menu max_levels=5 template="menus/bootstrap3/main_menu_dropdown.html" %}
+-->
+          <ul class="navbar-nav ml-auto">
+
+            {% main_menu max_levels=5 template="blog/menu_bs4/m2.html" %}
+
+<!--
+            <li class="nav-item active">
+              <a class="nav-link" href="{{slugurl}}/en/home/">Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{slugurl}}/en/posts/">Posts</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{slugurl}}/site-tree/">Site map</a>
+            </li>
+-->
+          </ul>
+        </div>
+      </div>
+    </nav>
+    
+    <!-- end Navigation -->
+
+    <!-- Page Content -->
+    <div class="container">
+
+      <div class="row">
+        
+        <!-- Blog Entries Column -->
+        <div class="col-md-8 my-2">
+        
+        {% block display %}
+        {% endblock %}
+
+	</div>
+
+        <!-- Sidebar Widgets Column -->
+        <div class="col-md-4">
+
+          <!-- Search Widget -->
+          <div class="card my-4 mycolor">
+            <h5 class="card-header">Search</h5>
+            <div class="card-body">
+              <div class="input-group">
+                <span class="input-group-btn">
+                  <form class="form-inline" action="{{slugurl}}/blog-search"  method="get">
+                    
+                    <input type="text" class="form-control" placeholder="Search for..." id="key" name="key">
+                    <input class="btn btn-secondary" type="submit" value="Go">
+                  </form>
+                </span>
+              </div>
+            </div>
+          </div>
+
+         <!-- Categories Widget -->
+          <div class="card my-4 mycolor">
+            <h5 class="card-header">Categories</h5>
+            <div class="card-body">
+                  <ul class="list-unstyled mb-0">
+			    {% for category in categories %}
+			    <ul>
+			        <li>
+			            <a href="{% slugurl 'category' %}?category={{ category.name }}">{{ category.name }}</a>
+			       </li>
+			    </ul>
+			    {% endfor %}
+		  </ul>
+            </div>
+          </div>
+
+          <!-- Side Widget -->
+          <div class="card my-4 mycolor">
+            <h5 class="card-header">All tags</h5>
+            <div class="card-body">
+               {% for tag in tags %}
+               <a href="{% slugurl 'tags' %}?tag={{ tag }}"><button type="button">{{ tag }}</button></a> 
+               {% endfor %}
+            </div>
+          </div>
+
+        </div>
+    <!-- End Sidebars-->
+
+      </div>
+      <!-- /.row -->
+
+    </div>
+    <!-- /.container -->
+
+    <footer class="jumbotron text-center bg-dark py-1" style="margin-bottom:0">
+        <div class="col-sm-2 mx-auto text-center">
+            <img class="img-fluid" src="{% static 'blog/img/wagtail_badges/wagtail_badge_retina_white.png' %}" alt="Wagtail-CMS logo"/>
+        </div>
+        <p class="m-0 text-center text-white">My site</p>
+    </footer>
+
+{% endblock %}

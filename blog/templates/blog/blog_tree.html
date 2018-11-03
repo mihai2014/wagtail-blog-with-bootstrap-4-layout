@@ -1,0 +1,81 @@
+{% extends "blog/layout.html" %}
+
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-blogtree{% endblock %}
+
+{% block display %}
+
+    {% comment %}
+    {% with categories=page.categories.all %}
+        {% if categories %}
+    
+                    {% for category in categories %}
+                        <li>
+                            {{ category.name }}
+                        </li>
+                    {% endfor %}
+ 
+        {% endif %}
+    {% endwith %}
+    {% endcomment %}
+
+{% comment %}
+{% for category in categories %}
+
+    {% for post in posts %}
+       {% with all=post.specific.categories.all %}
+
+           {% for c in all %}
+               {% with name=c.name %}
+           
+               {% if category.name == c.name %}
+                   <li> 
+                       {{ post }} - {{ name }}  {{all}}
+                   </li>
+               {% else %}
+               {% endif %}
+
+               {% endwith %}
+           {% endfor %}
+
+       {% endwith %}
+    {% endfor %}
+
+{% endfor %}
+{% endcomment %}
+
+<div class="row">
+
+<div class="col-md-6">
+    Pages
+</div>
+
+<div class="col-md-6">
+    Categories
+</div>
+
+{% for post in posts %}
+    <div class="col-md-6">
+        <a href="{% pageurl post %}">{{ post.title }}</a>
+    </div>
+
+    <div class="col-md-6">
+    {% with all=post.specific.categories.all %}
+        {% for category in all %}    
+            {{ category.name }}
+        {% endfor %}
+    {% endwith %}
+    </div>
+
+{% endfor %}
+
+</div>
+
+<br>
+
+<p>Pages tree</p>
+
+{{ menu|richtext }}
+
+{% endblock %}

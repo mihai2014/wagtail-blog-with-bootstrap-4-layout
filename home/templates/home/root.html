@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags %}
+
+{% block body_class %}template-homepage{% endblock %}
+
+{% block extra_css%}
+    <!-- <meta http-equiv="refresh" content="0; URL='{{ page.get_site.root_url }}/en/home' " /> -->
+{% endblock %}
+
+{% block content %}
+   {{ page.body|richtext }}
+{% endblock %}
+
